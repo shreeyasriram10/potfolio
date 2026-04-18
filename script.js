@@ -204,41 +204,6 @@ document.querySelectorAll('.btn').forEach((btn) => {
 });
 
 // ===========================
-// CONTACT FORM HANDLING
-// ===========================
-
-const contactForm = document.querySelector('.contact-form');
-
-if (contactForm) {
-    contactForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-
-        // Get form values
-        const formData = new FormData(contactForm);
-        const data = Object.fromEntries(formData);
-
-        // Show success message (you can integrate with backend later)
-        const successMsg = document.createElement('div');
-        successMsg.style.padding = '1rem';
-        successMsg.style.background = 'rgba(34, 197, 94, 0.1)';
-        successMsg.style.border = '1px solid rgba(34, 197, 94, 0.5)';
-        successMsg.style.borderRadius = '8px';
-        successMsg.style.color = '#22c55e';
-        successMsg.textContent = '✓ Message sent successfully!';
-
-        contactForm.appendChild(successMsg);
-
-        // Reset form
-        contactForm.reset();
-
-        // Remove success message after 3 seconds
-        setTimeout(() => {
-            successMsg.remove();
-        }, 3000);
-    });
-}
-
-// ===========================
 // PAGE LOAD ANIMATIONS
 // ===========================
 
@@ -366,6 +331,34 @@ if (prefersReducedMotion.matches) {
     document.querySelectorAll('*').forEach((el) => {
         el.style.animation = 'none !important';
         el.style.transition = 'background-color 0.3s ease, color 0.3s ease !important';
+    });
+}
+
+// ===========================
+// FORM SUBMIT & WHATSAPP
+// ===========================
+
+const contactForm = document.getElementById("contactFormMain");
+
+if (contactForm) {
+    contactForm.addEventListener("submit", function(e) {
+        const name = document.getElementById("contactName").value.trim();
+        const email = document.getElementById("contactEmail").value.trim();
+        const message = document.getElementById("contactMessage").value.trim();
+
+        if (!name || !email || !message) {
+            e.preventDefault();
+            alert("❌ Please fill in all fields.");
+            return;
+        }
+
+        const fullMessage = `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`;
+        const whatsappMessage = encodeURIComponent(fullMessage);
+        const whatsappURL = `https://wa.me/919840787075?text=${whatsappMessage}`;
+
+        window.open(whatsappURL, "_blank");
+
+        // The browser will now submit the form to FormSubmit.co in a new tab.
     });
 }
 
